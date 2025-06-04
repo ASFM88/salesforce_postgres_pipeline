@@ -12,6 +12,7 @@ Este projeto tem como objetivo criar uma estrutura robusta para extração, tran
 
 ## 📌 Estrutura do Projeto
 
+```plaintext
 salesforce_postgres_pipeline/
 ├── docker/ # Infraestrutura Docker
 │ ├── postgres/
@@ -27,7 +28,7 @@ salesforce_postgres_pipeline/
 ├── .env # Variáveis sensíveis (não versionado)
 ├── .gitignore
 └── README.md
-
+```
 
 ## 🚀 Funcionalidades
 
