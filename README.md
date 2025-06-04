@@ -1,99 +1,76 @@
-# Salesforce Postgre Integration
+# 🐘 Salesforce Postgres Pipeline
 
-Projeto Python para integração e processamento de dados entre Salesforce e PostgreSQL.
+Este projeto tem como objetivo criar uma estrutura robusta para extração, transformação e carregamento de dados provenientes da API do Salesforce para um banco de dados PostgreSQL, utilizando Docker para orquestração do ambiente.
 
-## 📦 Estrutura do Projeto
+## 🔧 Tecnologias Utilizadas
 
-```
-salesforce_postgree/
-├── src/
-│   └── salesforce_postgree/
-│       ├── __init__.py
-│       └── main.py
-├── tests/
-│   └── test_main.py
-├── pyproject.toml
-├── poetry.lock
+- Python 3.11+
+- PostgreSQL 14+
+- Docker / Docker Compose
+- Salesforce API (via `simple-salesforce`)
+- pandas, duckdb, sqlalchemy, psycopg2
+
+## 📌 Estrutura do Projeto
+
+salesforce_postgres_pipeline/
+├── docker/ # Infraestrutura Docker
+│ ├── postgres/
+│ │ └── init.sql # Scripts de inicialização do banco
+│ └── docker-compose.yml # Orquestração dos containers
+├── scripts/ # Scripts principais do pipeline
+│ ├── raw_builder.py # ETL da camada RAW
+│ ├── utils/
+│ │ ├── conexao_postgres.py # Conexão com PostgreSQL
+│ │ └── incremental_update.py # Lógica de atualização incremental
+├── notebooks/ # Notebooks para exploração e testes
+├── requirements.txt # Dependências Python
+├── .env # Variáveis sensíveis (não versionado)
+├── .gitignore
 └── README.md
-```
+
 
 ## 🚀 Funcionalidades
 
-- Extração de dados do Salesforce (via API)
-- Armazenamento ou sincronização em PostgreSQL
-- Lógica de atualização incremental e versionamento
-- Organização em pacotes com estrutura `src/`
-- Testes automatizados com `pytest`
+- Conexão com Salesforce via API
+- Extração incremental baseada nos campos `Id` e `LastModifiedDate`
+- Armazenamento das alterações em tabelas de histórico (`*_hist_update`)
+- Persistência dos dados na camada RAW do PostgreSQL
+- Versionamento da estrutura de dados e histórico de alterações
 
-## 🛠️ Pré-requisitos
-
-- Python 3.11+
-- [Poetry](https://python-poetry.org/docs/#installation)
-- Acesso à API do Salesforce
-- Instância de banco de dados PostgreSQL
-
-## ⚙️ Instalação
+## 🐳 Como Executar
 
 1. Clone o repositório:
-
 ```bash
-git clone https://github.com/sua-conta/salesforce_postgree.git
-cd salesforce_postgree
+git clone https://github.com/ASFM88/salesforce_postgres_pipeline.git
+cd salesforce_postgres_pipeline
 ```
 
-2. Instale as dependências com Poetry:
+2. Configure o arquivo .env com as credenciais do Salesforce e PostgreSQL.
 
+3. Suba os containers com Docker:
 ```bash
-poetry install
+docker-compose up -d
 ```
 
-3. (Opcional) Ative o ambiente virtual:
-
+4. Instale as dependências Python:
 ```bash
-poetry shell
+pip install -r requirements.txt
 ```
 
-## ▶️ Como Executar
-
-Execute o script principal:
-
+5. Execute o pipeline de extração:
 ```bash
-poetry run python src/salesforce_postgree/main.py
+python scripts/raw_builder.py
 ```
 
-## 🧪 Rodando os Testes
+🔒 Segurança
+O arquivo .env não deve ser versionado (já está no .gitignore)
 
-Execute todos os testes com:
+Não armazene senhas diretamente nos scripts
 
-```bash
-poetry run pytest
-```
+🗺️ Próximos Passos
+- Criação das camadas stage e trusted
+- Otimização de performance para grandes volumes
+- Integração com ferramentas de visualização (ex: Metabase, Superset)
+- Monitoramento e logging
 
-## 📝 Variáveis de Ambiente
-
-Você pode usar um arquivo `.env` para configurar as credenciais e strings de conexão:
-
-```
-SALESFORCE_USERNAME=...
-SALESFORCE_PASSWORD=...
-POSTGRES_URL=postgresql://user:password@host:port/database
-```
-
-## 🗂️ Organização do Código
-
-| Pasta/Arquivo          | Descrição                                      |
-|------------------------|-----------------------------------------------|
-| `src/`                 | Código-fonte da aplicação                     |
-| `src/salesforce_postgree/` | Módulo principal do projeto               |
-| `tests/`               | Testes automatizados                          |
-| `pyproject.toml`       | Gerenciador de dependências (Poetry)          |
-
-## 📌 TODOs futuros
-
-- [ ] Implementar atualização incremental com controle de histórico
-- [ ] Adicionar log estruturado com timestamps
-- [ ] Criar dashboard de acompanhamento com Streamlit ou Power BI
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+---
