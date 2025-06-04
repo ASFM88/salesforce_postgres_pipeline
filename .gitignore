@@ -1,0 +1,40 @@
+# Ambiente virtual local
+.venv/
+
+# Arquivos de cache Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Configurações do VS Code e PyCharm
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de teste ou cobertura
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+.cache/
+.pytest_cache/
+
+# Poetry
+poetry.lock
+
+# Outros
+.env
+.env.*
+
+
